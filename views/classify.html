@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<link rel="stylesheet" href="../assets/bootstrap.css"> <!-- bootstrap darkly theme: https://bootswatch.com/darkly/ -->
+	<script src="https://kit.fontawesome.com/d236e49b89.js" crossorigin="anonymous"></script>
 
 	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	<!-- <script type="text/javascript" src="../node_modules/androidjs/lib/androidjs.js"></script> -->
@@ -34,27 +35,45 @@
 			<h6 class="card-title text-muted">Host: 192.168.1.16</h6>
 		</div>
 
+		<div class="card-body">
+			<div class="btn-group mr-2" role="group" aria-label="First group">
+				<button type="button" class="btn btn-primary btn-sm float-left"><i class="fas fa-undo"></i></button>
+				<button type="button" class="btn btn-primary btn-sm float-right"><i class="fas fa-forward"></i></button>
+			</div>
+			<div class="btn-group mr-2" role="group" aria-label="second group">
+				<button type="button" class="btn btn-primary btn-sm float-left"><i class="fas fa-plus-square"></i></button>
+			</div>
+		</div>
+
 		<svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none" width="100%" height="200" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveAspectRatio="xMidYMid slice" viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
 		<rect width="100%" height="100%" fill="#868e96" style="--darkreader-inline-fill: #585f63;" data-darkreader-inline-fill=""></rect>
 		<text x="50%" y="50%" fill="#dee2e6" dy=".3em" style="--darkreader-inline-fill: #d6d2cd;" data-darkreader-inline-fill="">Image cap</text>
 		</svg>
 
 		<div class="card-body">
-			<div class="class_button">
-				sitting
-			  </div>
-		
-			  <div style="margin-left:25%;" class="class_button">
-				standing
-			  </div>
-		
-			  <div style="margin-left:50%;" class="class_button">
-				laying
-			  </div>
-			  
-			  <div style="margin-left:75%;" class="class_button">
-				unknown
-			  </div>
+			<div class="row">
+				<div class="col">
+					<div class="class_button">
+						sitting
+					  </div>
+				
+					  <div style="margin-left:25%;" class="class_button">
+						standing
+					  </div>
+				
+					  <div style="margin-left:50%;" class="class_button">
+						laying
+					  </div>
+					  
+					  <div style="margin-left:75%;" class="class_button">
+						unknown
+					  </div>
+				</div>
+				<div class="col">
+					
+				</div>
+			</div>
+
 		
 		</div>
 		

@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<link rel="stylesheet" href="../assets/bootstrap.css"> <!-- bootstrap darkly theme: https://bootswatch.com/darkly/ -->
+	<script src="https://kit.fontawesome.com/d236e49b89.js" crossorigin="anonymous"></script>
 
 	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	<!-- <script type="text/javascript" src="../node_modules/androidjs/lib/androidjs.js"></script> -->
@@ -20,10 +21,10 @@
 
 	<nav class="navbar fixed-top navbar-light bg-light">
 		<div class="container-fluid">
-		  <span class="navbar-brand mb-0 h1">Navbar</span>
+		  <span class="navbar-brand mb-0 h1"><i class="fas fa-chalkboard-teacher"></i> Training Data</span>
 		  <span class="navbar-text">
 			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_modal">
-				Add
+				<i class="fas fa-plus-square"></i>
 			</button>
 		  </span>
 		</div>
@@ -37,9 +38,9 @@
 					<div class="col-7">Dog Poses</div>
 					<div class="col-3">
 						<div class="btn-group" role="group" aria-label="Basic outlined example">
-							<button type="button" class="btn btn-outline-primary">P</button>
-							<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#add_modal">E</button>
-							<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#del_modal">D</button>
+							<button type="button" class="btn btn-outline-primary"><i class="fas fa-play"></i></button>
+							<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#add_modal"><i class="fas fa-edit"></i></button>
+							<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#del_modal"><i class="fas fa-trash"></i></button>
 						</div>
 					</div>
 				</div>
@@ -51,9 +52,9 @@
 					<div class="col-7">Plant Health</div>
 					<div class="col-3">
 						<div class="btn-group" role="group" aria-label="Basic outlined example">
-							<button type="button" class="btn btn-outline-primary">P</button>
-							<button type="button" class="btn btn-outline-primary">E</button>
-							<button type="button" class="btn btn-outline-primary">D</button>
+							<button type="button" class="btn btn-outline-primary"><i class="fas fa-play"></i></button>
+							<button type="button" class="btn btn-outline-primary"><i class="fas fa-edit"></i></button>
+							<button type="button" class="btn btn-outline-primary"><i class="fas fa-trash"></i></button>
 						</div>
 					</div>
 				</div>
@@ -67,7 +68,7 @@
 		<div class="modal-dialog modal-fullscreen">
 		<div class="modal-content">
 			<div class="modal-header">
-			<h5 class="modal-title">Add a new datastore</h5>
+			<h5 class="modal-title"><i class="fas fa-file"></i>  Add a new datastore</h5>
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				<span aria-hidden="true">&times;</span>
 			</button>
@@ -75,22 +76,27 @@
 			<div class="modal-body">
 				<form>
 					<div class="input-group mb-3">
-						<span class="input-group-text" id="basic-addon1">@</span>
+						<span class="input-group-text" id="basic-addon1"><i class="fas fa-tag"></i></span>
+						<input type="text" class="form-control" placeholder="Label" aria-label="Label" aria-describedby="basic-addon1">
+					</div>
+
+					<div class="input-group mb-3">
+						<span class="input-group-text" id="basic-addon1"><i class="fas fa-globe"></i></span>
 						<input type="text" class="form-control" placeholder="Host" aria-label="Host" aria-describedby="basic-addon1">
 					</div>
 					
 					<div class="input-group mb-3">
-						<span class="input-group-text" id="basic-addon1">@</span>
+						<span class="input-group-text" id="basic-addon1"><i class="fas fa-ethernet"></i></span>
 						<input type="text" class="form-control" placeholder="Port" aria-label="Port" aria-describedby="basic-addon1">
 					</div>
 
 					<div class="input-group mb-3">
-						<span class="input-group-text" id="basic-addon1">@</span>
+						<span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i></span>
 						<input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
 					</div>
 
 					<div class="input-group mb-3">
-						<span class="input-group-text" id="basic-addon1">@</span>
+						<span class="input-group-text" id="basic-addon1"><i class="fas fa-key"></i></span>
 						<input type="text" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
 					</div>
 				</form>
