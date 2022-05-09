@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="../assets/bootstrap.css"> <!-- bootstrap darkly theme: https://bootswatch.com/darkly/ -->
 
 	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-	<script type="text/javascript" src="../node_modules/androidjs/lib/androidjs.js"></script>
+	<!-- <script type="text/javascript" src="../node_modules/androidjs/lib/androidjs.js"></script> -->
 </head>
 
 <style>
@@ -22,7 +22,7 @@
 		<div class="container-fluid">
 		  <span class="navbar-brand mb-0 h1">Navbar</span>
 		  <span class="navbar-text">
-			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_modal">
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_modal">
 				Add
 			</button>
 		  </span>
@@ -34,7 +34,21 @@
 		<li class="list-group-item">
 			<div class="container">
 				<div class="row">
-					<div class="col-7">Cras justo odio</div>
+					<div class="col-7">Dog Poses</div>
+					<div class="col-3">
+						<div class="btn-group" role="group" aria-label="Basic outlined example">
+							<button type="button" class="btn btn-outline-primary">P</button>
+							<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#add_modal">E</button>
+							<button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#del_modal">D</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</li>
+		<li class="list-group-item">
+			<div class="container">
+				<div class="row">
+					<div class="col-7">Plant Health</div>
 					<div class="col-3">
 						<div class="btn-group" role="group" aria-label="Basic outlined example">
 							<button type="button" class="btn btn-outline-primary">P</button>
@@ -45,42 +59,71 @@
 				</div>
 			</div>
 		</li>
-		<li class="list-group-item">Dapibus ac facilisis in</li>
-		<li class="list-group-item">Morbi leo risus</li>
-		<li class="list-group-item">Porta ac consectetur ac</li>
-		<li class="list-group-item">Vestibulum at eros</li>
 		</ul>
 	</div>
 
+
 	<div id="add_modal" class="modal" tabindex="-1">
-		<div class="modal-dialog">
+		<div class="modal-dialog modal-fullscreen">
 		<div class="modal-content">
 			<div class="modal-header">
-			<h5 class="modal-title">Edit Datastore</h5>
-			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			<h5 class="modal-title">Add a new datastore</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
 			</div>
 			<div class="modal-body">
 				<form>
 					<div class="input-group mb-3">
 						<span class="input-group-text" id="basic-addon1">@</span>
-						<input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-					  </div>
+						<input type="text" class="form-control" placeholder="Host" aria-label="Host" aria-describedby="basic-addon1">
+					</div>
+					
+					<div class="input-group mb-3">
+						<span class="input-group-text" id="basic-addon1">@</span>
+						<input type="text" class="form-control" placeholder="Port" aria-label="Port" aria-describedby="basic-addon1">
+					</div>
 
-					  <div class="input-group mb-3">
+					<div class="input-group mb-3">
+						<span class="input-group-text" id="basic-addon1">@</span>
+						<input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+					</div>
+
+					<div class="input-group mb-3">
 						<span class="input-group-text" id="basic-addon1">@</span>
 						<input type="text" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
-					  </div>
+					</div>
 				</form>
 			</div>
 			<div class="modal-footer">
-			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 			<button type="button" class="btn btn-primary">Save changes</button>
 			</div>
 		</div>
 		</div>
 	</div>
 
-<script type="text/javascript" src = "../assets/script.js"></script>
+
+	<div id="del_modal" class="modal" tabindex="-1">
+		<div class="modal-dialog modal-fullscreen">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title">Delete datastore credentials?</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			</div>
+			<div class="modal-body">
+				Are you sure you want to delete this datastore entry?
+			</div>
+			<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-danger">Delete</button>
+			</div>
+		</div>
+		</div>
+	</div>
+<!-- <script type="text/javascript" src = "../assets/script.js"></script> -->
 <script src="../assets/jquery-3.3.1.slim.min.js"></script>
 <script src="../assets/popper.min.js"></script>
 <script src="../assets/bootstrap.min.js"></script>

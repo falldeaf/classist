@@ -1,8 +1,8 @@
 {
     "version": "1.0.0",
     "name": "classist",
-    "app-name": "classist",
-    "package-name": "webview",
+    "app-name": "Classist",
+    "package-name": "classist",
     "project-type": "webview",
     "icon": "./assets/icon/icon.png",
     "dist-path": "./dist",

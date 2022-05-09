@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Webview Example</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../assets/bootstrap.css"> <!-- bootstrap darkly theme: https://bootswatch.com/darkly/ -->
+
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<!-- <script type="text/javascript" src="../node_modules/androidjs/lib/androidjs.js"></script> -->
+</head>
+
+<style>
+	.app{
+		font-size:30px;
+	}
+
+	.class_button {
+		width:100px;
+		height:30px;
+		border-radius: 0px 20px;
+		background-color: blue;
+		margin:4px;
+		padding:10px;
+		text-align:center;
+	}
+</style>
+
+<body>
+
+	<div class="card mb-3">
+		<h3 class="card-header">Dog Poses</h3>
+		<div class="card-body">
+			<h6 class="card-title text-muted">Host: 192.168.1.16</h6>
+		</div>
+
+		<svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none" width="100%" height="200" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveAspectRatio="xMidYMid slice" viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
+		<rect width="100%" height="100%" fill="#868e96" style="--darkreader-inline-fill: #585f63;" data-darkreader-inline-fill=""></rect>
+		<text x="50%" y="50%" fill="#dee2e6" dy=".3em" style="--darkreader-inline-fill: #d6d2cd;" data-darkreader-inline-fill="">Image cap</text>
+		</svg>
+
+		<div class="card-body">
+			<div class="class_button">
+				sitting
+			  </div>
+		
+			  <div style="margin-left:25%;" class="class_button">
+				standing
+			  </div>
+		
+			  <div style="margin-left:50%;" class="class_button">
+				laying
+			  </div>
+			  
+			  <div style="margin-left:75%;" class="class_button">
+				unknown
+			  </div>
+		
+		</div>
+		
+		<div class="card-footer text-muted">
+		2 days ago
+		</div>
+	</div>
+
+<!-- <script type="text/javascript" src = "../assets/script.js"></script> -->
+<script src="../assets/jquery-3.3.1.slim.min.js"></script>
+<script src="../assets/popper.min.js"></script>
+<script src="../assets/bootstrap.min.js"></script>
+<style type="text/css">
+  html, body {
+    height: 100%;
+  }
+
+  .container {
+    padding: 0px;
+  }
+
+  .display-3 {
+    font-size: 2.0rem;
+  }
+
+  .jumbotron {
+    background: #fff;
+  }
+
+</style>
+<script type="text/javascript">
+	function toggle_popover() {
+		$('#popover').popover('toggle')
+	}
+</script>
+</body>
+
+</html>
