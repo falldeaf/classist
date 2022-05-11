@@ -7,7 +7,9 @@
     "icon": "./assets/icon/icon.png",
     "dist-path": "./dist",
     "permission": [
-        "android.permission.INTERNET"
+    	"android.permission.INTERNET",
+		"android.permission.CAMERA",
+		"android.permission.RECORD_AUDIO"
     ],
     "description": "",
     "main": "main.js",
