@@ -12,8 +12,8 @@ back.on("savecreds", async ()=>{
 });
 
 back.on("testcreds", async (creds)=>{
-	result_message = (await getClassifyJson(creds) != null) ? "Success" : "Failure";
-	back.send("toast", result_message);
+	rjson = await getClassifyJson(creds);
+	back.send("toast", rjson.hasOwnProperty('classifiers') ? "Success" : "Failure");
 });
 
 back.on("getcredlist", async ()=>{
@@ -35,12 +35,15 @@ async function getClassifyJson(creds) {
 	try {
 		
 		await sftp.connect(creds);
-		const cjson = JSON.parse(await sftp.get(creds.path + '/classify.json'));
+		const cjson = await JSON.parse(await sftp.get(creds.path + '/classifiers.json'));
+		back.send("console", cjson);
 		await sftp.end();
 	}
 
-	catch {
-		const cjson = null;
+	catch (err) {
+		await sftp.end();
+		back.send("toast", "Failure");
+		back.send("console", err.message);
 	}
 
 	return cjson;

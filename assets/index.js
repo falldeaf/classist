@@ -16,12 +16,15 @@ front.on("list", function(creds){
 });
 
 front.on("toast", function(message){
-	app.toast.show("Connection: " + message, 0);
+	app.toast.show(message, 0);
 });
+
+front.on("console", function(message){
+	console.log(message);
+})
 
 //Test button
 document.querySelector("#test_button").onclick = function(evt) {
-	app.toast.show("testing...", 0);
 	let creds = {
 		label: document.querySelector("#label_field").value,
 		host: document.querySelector("#host_field").value,
