@@ -1,3 +1,5 @@
+let current_creds;
+
 (async ()=> {
 	//front.send("")
 	removeAllChildNodes(document.querySelector("#cred_list"));
@@ -6,6 +8,7 @@
 })();
 
 front.on("list", function(creds){
+	current_creds = creds;
 
 	removeAllChildNodes(document.querySelector("#cred_list"));
 	for(let cred of creds) {

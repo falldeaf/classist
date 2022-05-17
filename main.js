@@ -1,3 +1,4 @@
+const fs = require('fs');
 let Client = require('ssh2-sftp-client');
 let sftp = new Client();
 let current_creds;
@@ -7,8 +8,32 @@ const back = require('androidjs').back;
 //////////////////////////////
 // Crud Operations for SFTP training data
 
-back.on("savecreds", async ()=>{
+back.on("loadcreds", async (path) => {
+	fs.readFile(path + '/databases.json', 'utf8', (err, data) => {
 
+		if (err) {
+			back.send("console", err);
+		} else {
+			const creds = JSON.parse(data);
+	
+			back.send("list", creds);
+		}
+	});
+});
+
+back.on("savecreds", async (data)=>{
+	const data = JSON.stringify(data.cred);
+
+	// write file to disk
+	fs.writeFile(data.path + '/databases.json', data, 'utf8', (err) => {
+	
+		if (err) {
+			back.send("console", err);
+		} else {
+			back.send("writesuccess");
+		}
+	
+	});
 });
 
 back.on("testcreds", async (creds)=>{
