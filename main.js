@@ -1,7 +1,9 @@
 const fs = require('fs');
 let Client = require('ssh2-sftp-client');
 let sftp = new Client();
-let current_creds;
+
+let current_creds = [];
+let save_path;
 
 const back = require('androidjs').back;
 
@@ -9,6 +11,9 @@ const back = require('androidjs').back;
 // Crud Operations for SFTP training data
 
 back.on("loadcreds", async (path) => {
+	save_path = path;
+	back.send("console", "Save path is: " + save_path);
+
 	fs.readFile(path + '/databases.json', 'utf8', (err, data) => {
 
 		if (err) {
@@ -21,11 +26,11 @@ back.on("loadcreds", async (path) => {
 	});
 });
 
-back.on("savecreds", async (data)=>{
-	const data = JSON.stringify(data.cred);
+back.on("savecreds", async (creds)=>{
+	const data = JSON.stringify(creds);
 
 	// write file to disk
-	fs.writeFile(data.path + '/databases.json', data, 'utf8', (err) => {
+	fs.writeFile(save_path + '/databases.json', data, 'utf8', (err) => {
 	
 		if (err) {
 			back.send("console", err);
@@ -39,14 +44,6 @@ back.on("savecreds", async (data)=>{
 back.on("testcreds", async (creds)=>{
 	rjson = await getClassifyJson(creds);
 	back.send("toast", rjson.hasOwnProperty('classifiers') ? "Success" : "Failure");
-});
-
-back.on("getcredlist", async ()=>{
-	back.send("list", [{label:"test1"},{label:"test2"},{label:"test3"}]);
-});
-
-back.on("getcreds", async (index)=>{
-	//current_creds = credlist[index];
 });
 
 ///////////////////////////
