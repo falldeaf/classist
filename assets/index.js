@@ -1,5 +1,8 @@
 let current_creds = [];
 let current_index = -1;
+let current_pass;
+let current_classifier;
+let current_list;
 
 (async ()=> {
 	removeAllChildNodes(document.querySelector("#cred-list"));
@@ -7,9 +10,49 @@ let current_index = -1;
 	//for(let i = 0; i <=10; i++) addListItem({label: i});
 })();
 
-front.on("list", function(creds){
+front.on("rendercreds", function(creds){
 	current_creds = creds;
 	renderList();
+});
+
+front.on("storelist", function(list) {
+	console.log(list);
+	current_list = list;
+});
+
+front.on("testresult", function(result){
+	document.querySelector('#test-button').removeAttribute("disabled");
+	document.querySelector('#test-button').innerHTML = '<i class="fas fa-vial"></i> Test';
+
+	if(result.hasOwnProperty('classifiers')) {
+		if(document.querySelector("#test-button").classList.contains('btn-info')) document.querySelector("#test-button").classList.replace("btn-info", "btn-success");
+		if(document.querySelector("#test-button").classList.contains('btn-danger')) document.querySelector("#test-button").classList.replace("btn-danger", "btn-success");
+		app.toast.show( "Success", 0);
+	} else {
+		if(document.querySelector("#test-button").classList.contains('btn-info')) document.querySelector("#test-button").classList.replace("btn-info", "btn-danger");
+		if(document.querySelector("#test-button").classList.contains('btn-success')) document.querySelector("#test-button").classList.replace("btn-success", "btn-danger");
+		app.toast.show( "Can't connect", 0);
+	}
+
+});
+
+front.on("classifierresult", function(result){
+	document.querySelector('#pass-button').removeAttribute("disabled");
+	document.querySelector('#pass-button').innerHTML = 'Connect';
+
+	if(result.hasOwnProperty('classifiers')) {
+		current_classifier = result;
+		current_pass = document.querySelector('#check-pass-field').value;
+		document.querySelector('#check-pass-field').value = "";
+		$('#pass-modal').modal('hide');
+		$('#play-modal').modal('show');
+		front.send("list", current_creds[current_index], current_pass);
+	} else {
+		console.log("bad password");
+		app.toast.show("Can't connect", 0);
+		if(document.querySelector("#pass-button").classList.contains('btn-primary')) document.querySelector("#pass-button").classList.replace("btn-primary", "btn-danger");
+	}
+
 });
 
 front.on("toast", function(message){
@@ -18,7 +61,7 @@ front.on("toast", function(message){
 
 front.on("console", function(message){
 	console.log(message);
-})
+});
 
 function renderList() {
 	removeAllChildNodes(document.querySelector("#cred-list"));
@@ -39,6 +82,7 @@ function renderList() {
 			document.querySelector('#pass-label').innerHTML = label;
 			document.querySelector('#check-user-field').value = current_creds[current_index].username;
 			document.querySelector("#pass-button").setAttribute('clabel', label);
+			document.querySelector('#check-pass-field').focus();
 		}
 	});
 
@@ -82,9 +126,15 @@ document.querySelector("#save-button").onclick = function(evt){
 
 //Test button
 document.querySelector("#test-button").onclick = function(evt) {
-	let creds = captureFields();
-	console.log(creds);
-	front.send("testcreds", creds);
+	let cred = captureFields();
+	console.log(cred);
+
+	if(document.querySelector("#test-button").classList.contains('btn-danger')) document.querySelector("#test-button").classList.replace("btn-danger", "btn-info");
+	if(document.querySelector("#test-button").classList.contains('btn-success')) document.querySelector("#test-button").classList.replace("btn-success", "btn-info");
+	document.querySelector('#test-button').innerHTML = '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Testing';
+	document.querySelector('#test-button').setAttribute('disabled', '');
+
+	front.send("testcreds", cred, document.querySelector("#pass-field").value);
 }
 
 //Add button
@@ -112,9 +162,13 @@ document.querySelector("#delete-button").onclick = function(evt) {
 document.querySelector("#pass-button").onclick = function(evt) {
 	let label = evt.target.getAttribute('clabel');
 	console.log("connect!: " + label);
+	current_pass = document.querySelector('#check-pass-field').value;
 
-	$('#pass-modal').modal('hide');
-	$('#play-modal').modal('show');
+	if(document.querySelector("#pass-button").classList.contains('btn-danger')) document.querySelector("#pass-button").classList.replace("btn-danger", "btn-primary");
+	document.querySelector('#pass-button').innerHTML = '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Connecting';
+	document.querySelector('#pass-button').setAttribute('disabled', '');
+
+	front.send("getclassifier", current_creds[current_index], current_pass);
 }
 
 function getIndexByName(label) {
@@ -132,8 +186,8 @@ function captureFields() {
 		host: document.querySelector("#host-field").value,
 		port: document.querySelector("#port-field").value,
 		path: document.querySelector("#path-field").value,
-		username: document.querySelector("#user-field").value,
-		password: document.querySelector("#pass-field").value
+		username: document.querySelector("#user-field").value
+		//password: document.querySelector("#pass-field").value //Don't save password
 	}
 }
 

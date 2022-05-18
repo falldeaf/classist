@@ -20,7 +20,7 @@ back.on("loadcreds", async (path) => {
 		} else {
 			const creds = JSON.parse(data);
 	
-			back.send("list", creds);
+			back.send("rendercreds", creds);
 		}
 	});
 });
@@ -40,9 +40,20 @@ back.on("savecreds", async (creds)=>{
 	});
 });
 
-back.on("testcreds", async (cred)=>{
-	rjson = await getClassifyJson(cred);
-	back.send("toast", rjson.hasOwnProperty('classifiers') ? "Success" : "Failure");
+back.on("list", async (cred, pass)=>{
+	cred.password = pass;
+
+	await sftp.connect(cred);
+	back.send("storelist", await sftp.list(cred.path));
+});
+
+back.on("getclassifier", (cred, pass)=>{
+	back.send("console", "getting classifier");
+	getClassifyJson(cred, pass, "classifierresult");
+});
+
+back.on("testcreds", (cred, pass)=>{
+	getClassifyJson(cred, pass, "testresult");
 });
 
 ///////////////////////////
@@ -52,22 +63,22 @@ back.on("put", async (data)=>{
 	putFile(current_creds, data);
 });
 
-async function getClassifyJson(creds) {
+async function getClassifyJson(cred, pass, return_channel) {
 	try {
-		
-		await sftp.connect(creds);
-		const cjson = await JSON.parse(await sftp.get(creds.path + '/classifiers.json'));
+		cred.password = pass;
+		await sftp.connect(cred);
+		const cjson = await JSON.parse(await sftp.get(cred.path + '/classifiers.json'));
+		back.send(return_channel, cjson);
 		back.send("console", cjson);
 		await sftp.end();
 	}
 
 	catch (err) {
-		await sftp.end();
-		back.send("toast", "Failure");
+		//back.send("toast", "Can't connect");
+		back.send(return_channel, {});
 		back.send("console", err.message);
+		await sftp.end();
 	}
-
-	return cjson;
 }
 
 async function putFile(creds, data) {
