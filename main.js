@@ -2,8 +2,7 @@ const fs = require('fs');
 let Client = require('ssh2-sftp-client');
 let sftp = new Client();
 
-let current_creds = [];
-let save_path;
+let current_cred, save_path, password;
 
 const back = require('androidjs').back;
 
@@ -41,8 +40,8 @@ back.on("savecreds", async (creds)=>{
 	});
 });
 
-back.on("testcreds", async (creds)=>{
-	rjson = await getClassifyJson(creds);
+back.on("testcreds", async (cred)=>{
+	rjson = await getClassifyJson(cred);
 	back.send("toast", rjson.hasOwnProperty('classifiers') ? "Success" : "Failure");
 });
 

@@ -1,8 +1,8 @@
 let current_creds = [];
+let current_index = -1;
 
 (async ()=> {
-	//front.send("")
-	removeAllChildNodes(document.querySelector("#cred_list"));
+	removeAllChildNodes(document.querySelector("#cred-list"));
 	front.send("loadcreds", app.getPath('userData'));
 	//for(let i = 0; i <=10; i++) addListItem({label: i});
 })();
@@ -21,68 +21,100 @@ front.on("console", function(message){
 })
 
 function renderList() {
-	removeAllChildNodes(document.querySelector("#cred_list"));
+	removeAllChildNodes(document.querySelector("#cred-list"));
 	for(let cred of current_creds) {
 		console.log(cred);
 		addListItem(cred);
 	}
 	////Add event handlers to buttons
 
+	//Play-password open buttons
+	document.querySelectorAll('.play-open').forEach(pbutton => {
+		pbutton.onclick = function(evt) {
+			let label = evt.target.getAttribute('clabel');
+			console.log(evt.target);
+			console.log("play button label: " + label);
+
+			current_index = getIndexByName(label);
+			document.querySelector('#pass-label').innerHTML = label;
+			document.querySelector('#check-user-field').value = current_creds[current_index].username;
+			document.querySelector("#pass-button").setAttribute('clabel', label);
+		}
+	});
+
 	//Delete open buttons
-	document.querySelectorAll('.delete_open').forEach(dbutton => {
+	document.querySelectorAll('.delete-open').forEach(dbutton => {
 		dbutton.onclick = function(evt) {
 			let label = evt.target.getAttribute('clabel');
-			document.querySelector("#delete_label").innerHTML = label;
-			document.querySelector("#delete_button").setAttribute('clabel', label);
+			console.log(evt.target);
+			console.log("delete button label: " + label);
+			document.querySelector("#delete-label").innerHTML = label;
+			document.querySelector("#delete-button").setAttribute('clabel', label);
 		}
 	});
 
 	//Edit open buttons
-	document.querySelectorAll('.edit_open').forEach(ebutton => {
+	document.querySelectorAll('.edit-open').forEach(ebutton => {
 		ebutton.onclick = function(evt) {
 			let label = evt.target.getAttribute('clabel');
 			console.log(evt.target);
 			console.log("edit button label: " + label);
-			document.querySelector("#label_field").value = current_creds[getIndexByName(label)].label;
-			document.querySelector("#host_field").value = current_creds[getIndexByName(label)].host;
-			document.querySelector("#port_field").value = current_creds[getIndexByName(label)].port;
-			document.querySelector("#path_field").value = current_creds[getIndexByName(label)].path;
-			document.querySelector("#user_field").value = current_creds[getIndexByName(label)].username;
-			document.querySelector("#pass_field").value = current_creds[getIndexByName(label)].password;
+			document.querySelector("#label-field").value = current_creds[getIndexByName(label)].label;
+			document.querySelector("#host-field").value = current_creds[getIndexByName(label)].host;
+			document.querySelector("#port-field").value = current_creds[getIndexByName(label)].port;
+			document.querySelector("#path-field").value = current_creds[getIndexByName(label)].path;
+			document.querySelector("#user-field").value = current_creds[getIndexByName(label)].username;
+			document.querySelector("#pass-field").value = "";//current_creds[getIndexByName(label)].password;
 		}
 	});
 }
 
 //Save button
-document.querySelector("#save_button").onclick = function(evt){
+document.querySelector("#save-button").onclick = function(evt){
 	let cred = captureFields();
+	cred.password = ""; //Always delete this, this is only used for testing the connection, never store it
 	addListItem(cred);
 	current_creds.push(cred);
 	clearFields();
-	$('#add_modal').modal('hide')
+	$('#add-modal').modal('hide');
 	front.send("savecreds", current_creds);
 }
 
 //Test button
-document.querySelector("#test_button").onclick = function(evt) {
+document.querySelector("#test-button").onclick = function(evt) {
 	let creds = captureFields();
 	console.log(creds);
 	front.send("testcreds", creds);
 }
 
+//Add button
+document.querySelector("#add-button").onclick = function(evt) {
+	clearFields();
+}
+
 //Delete button
-document.querySelector("#delete_button").onclick = function(evt) {
+document.querySelector("#delete-button").onclick = function(evt) {
 	let label = evt.target.getAttribute('clabel');
 	console.log(label);
 
-	for(const [index,cred] of current_creds.entries()) {
+	current_creds.splice(getIndexByName(label), 1);
+	/*for(const [index,cred] of current_creds.entries()) {
 		if(cred.label === label) {
 			current_creds.splice(index, 1);
 		}
-	}
-	$('#del_modal').modal('hide')
+	}*/
+	$('#del-modal').modal('hide')
 	front.send("savecreds", current_creds);
 	renderList();
+}
+
+//Pass button
+document.querySelector("#pass-button").onclick = function(evt) {
+	let label = evt.target.getAttribute('clabel');
+	console.log("connect!: " + label);
+
+	$('#pass-modal').modal('hide');
+	$('#play-modal').modal('show');
 }
 
 function getIndexByName(label) {
@@ -96,17 +128,17 @@ function getIndexByName(label) {
 
 function captureFields() {
 	return 	{
-		label: document.querySelector("#label_field").value,
-		host: document.querySelector("#host_field").value,
-		port: document.querySelector("#port_field").value,
-		path: document.querySelector("#path_field").value,
-		username: document.querySelector("#user_field").value,
-		password: document.querySelector("#pass_field").value
+		label: document.querySelector("#label-field").value,
+		host: document.querySelector("#host-field").value,
+		port: document.querySelector("#port-field").value,
+		path: document.querySelector("#path-field").value,
+		username: document.querySelector("#user-field").value,
+		password: document.querySelector("#pass-field").value
 	}
 }
 
 function clearFields() {
-	document.querySelector(".cred_input").value = "";
+	document.querySelector(".cred-input").value = "";
 }
 
 function addListItem(cred) {
@@ -120,16 +152,16 @@ function addListItem(cred) {
 					<div class="col-7">${cred.label}</div>
 					<div class="col-3">
 						<div class="btn-group" role="group" aria-label="Basic outlined example">
-							<button type="button" class="play_open btn btn-outline-primary"><i clabel="${cred.label}" class="fas fa-play"></i></button>
-							<button type="button" class="edit_open btn btn-outline-primary" data-toggle="modal" data-target="#add_modal"><i clabel="${cred.label}" class="fas fa-edit"></i></button>
-							<button type="button" class="delete_open btn btn-outline-primary" data-toggle="modal" data-target="#del_modal"><i clabel="${cred.label}" class="fas fa-trash"></i></button>
+							<button clabel="${cred.label}" type="button" class="play-open btn btn-outline-primary" data-toggle="modal" data-target="#pass-modal"><i  class="button-icon fas fa-play"></i></button>
+							<button clabel="${cred.label}" type="button" class="edit-open btn btn-outline-primary" data-toggle="modal" data-target="#add-modal"><i   class="button-icon fas fa-edit"></i></button>
+							<button clabel="${cred.label}" type="button" class="delete-open btn btn-outline-primary" data-toggle="modal" data-target="#del-modal"><i class="button-icon fas fa-trash"></i></button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</li>`;
 
-	document.querySelector("#cred_list").insertAdjacentHTML('afterbegin', li_string);
+	document.querySelector("#cred-list").insertAdjacentHTML('afterbegin', li_string);
 	//console.log(template.content.childNodes);
 	//document.querySelector("#cred_list").appendChild(template.content.childNodes);
 }
