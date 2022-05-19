@@ -1,6 +1,7 @@
 const fs = require('fs');
 let Client = require('ssh2-sftp-client');
 let sftp = new Client();
+const jpeg = require('jpeg-js');
 
 let current_cred, save_path, password;
 
@@ -54,6 +55,13 @@ back.on("getclassifier", (cred, pass)=>{
 
 back.on("testcreds", (cred, pass)=>{
 	getClassifyJson(cred, pass, "testresult");
+});
+
+back.on("getjpg", (filename, cred, pass)=>{
+
+	let image = await client.get(cred.path + "/" + filename);
+
+	back.send("recieveimages", [image]);
 });
 
 ///////////////////////////

@@ -1,3 +1,5 @@
+const { front } = require("androidjs");
+
 let current_creds = [];
 let current_index = -1;
 let current_pass;
@@ -15,9 +17,16 @@ front.on("rendercreds", function(creds){
 	renderList();
 });
 
+front.on("recieveimages", function(images) {
+	console.log(images);
+});
+
 front.on("storelist", function(list) {
 	console.log(list);
 	current_list = list;
+
+	//"30-5-21_9-45-34-795.jpg"
+	front.send("getjpg", "30-5-21_9-45-34-795.jpg", current_creds[current_index], current_pass);
 });
 
 front.on("testresult", function(result){

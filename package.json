@@ -7,9 +7,9 @@
     "icon": "./assets/icon/icon.png",
     "dist-path": "./dist",
     "permission": [
-    	"android.permission.INTERNET",
-		"android.permission.CAMERA",
-		"android.permission.RECORD_AUDIO"
+        "android.permission.INTERNET",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
     ],
     "description": "",
     "main": "main.js",
@@ -21,6 +21,7 @@
     "license": "ISC",
     "dependencies": {
         "androidjs": "^2.0.2",
+        "jpeg-js": "^0.4.3",
         "ssh2-sftp-client": "^8.0.0"
     },
     "project-name": "classist",
