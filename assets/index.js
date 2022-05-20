@@ -3,6 +3,7 @@ let current_index = -1;
 let current_pass;
 let current_classifier;
 let current_list;
+let current_images;
 
 (async ()=> {
 	removeAllChildNodes(document.querySelector("#cred-list"));
@@ -18,6 +19,8 @@ front.on("rendercreds", function(creds){
 front.on("storelist", function(list) {
 	console.log(list);
 	current_list = list;
+
+	front.send("getimages", ["30-5-21_9-45-34-795.jpg", "05-6-21_22-19-20-794.jpg"]);
 });
 
 front.on("testresult", function(result){
@@ -34,6 +37,11 @@ front.on("testresult", function(result){
 		app.toast.show( "Can't connect", 0);
 	}
 
+});
+
+front.on("receiveimages", function(images) {
+	current_images = images;
+	console.log(images);
 });
 
 front.on("classifierresult", function(result){
@@ -193,6 +201,10 @@ function captureFields() {
 
 function clearFields() {
 	document.querySelector(".cred-input").value = "";
+}
+
+function setImage(image) {
+	document.getElementById('current-image').src = URL.createObjectURL(new Blob([image], { type: 'image/jpg' }));
 }
 
 function addListItem(cred) {

@@ -1,6 +1,7 @@
 const fs = require('fs');
 let Client = require('ssh2-sftp-client');
 let sftp = new Client();
+const jpeg = require('jpeg-js');
 
 let current_cred, save_path, password;
 
@@ -40,6 +41,10 @@ back.on("savecreds", async (creds)=>{
 	});
 });
 
+back.on("saveclassification", async (json)=>{
+	
+});
+
 back.on("list", async (cred, pass)=>{
 	cred.password = pass;
 
@@ -59,6 +64,10 @@ back.on("testcreds", (cred, pass)=>{
 ///////////////////////////
 // Classifing API
 
+back.on("getimages", async (files)=>{
+	back.send("receiveimages", getImages(files));
+});
+
 back.on("put", async (data)=>{
 	putFile(current_creds, data);
 });
@@ -69,6 +78,7 @@ async function getClassifyJson(cred, pass, return_channel) {
 		await sftp.connect(cred);
 		const cjson = await JSON.parse(await sftp.get(cred.path + '/classifiers.json'));
 		back.send(return_channel, cjson);
+		if(return_channel === "classifierresult") current_cred = cred;
 		back.send("console", cjson);
 		await sftp.end();
 	}
@@ -79,6 +89,19 @@ async function getClassifyJson(cred, pass, return_channel) {
 		back.send("console", err.message);
 		await sftp.end();
 	}
+}
+
+async function getImages(files) {
+
+	let images = [];
+	for(let file of files) {
+		try {
+			images.push(await sftp.get(current_cred.path + "/" + file));
+		} catch (err) {
+			back.send("console", err.message);
+		}
+	}
+	back.send("receiveimages", images);
 }
 
 async function putFile(creds, data) {
