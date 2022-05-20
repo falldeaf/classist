@@ -41,6 +41,8 @@ front.on("testresult", function(result){
 
 front.on("receiveimages", function(images) {
 	current_images = images;
+	setImage(images[0]);
+	front.send("savejson", "{fooey:\"blah\"}", "/testfile.json");
 	console.log(images);
 });
 

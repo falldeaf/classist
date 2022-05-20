@@ -41,8 +41,12 @@ back.on("savecreds", async (creds)=>{
 	});
 });
 
-back.on("saveclassification", async (json)=>{
-	
+back.on("savejson", async (json, file)=>{
+	try {
+		await sftp.put(Buffer.from(json, 'utf8'), current_cred.path + '/' + file);
+	} catch (err) {
+		back.send("console", err.message);
+	}
 });
 
 back.on("list", async (cred, pass)=>{
@@ -66,10 +70,6 @@ back.on("testcreds", (cred, pass)=>{
 
 back.on("getimages", async (files)=>{
 	back.send("receiveimages", getImages(files));
-});
-
-back.on("put", async (data)=>{
-	putFile(current_creds, data);
 });
 
 async function getClassifyJson(cred, pass, return_channel) {
@@ -102,10 +102,4 @@ async function getImages(files) {
 		}
 	}
 	back.send("receiveimages", images);
-}
-
-async function putFile(creds, data) {
-	await sftp.connect(creds);
-	await sftp.put(data, creds.path + '/' + creds.filename);
-	await sftp.end();
 }
