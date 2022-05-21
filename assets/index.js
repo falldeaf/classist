@@ -1,3 +1,14 @@
+//////////////////////
+// TODO: 
+// * place classification json on server, still
+// * add image/audio from camera/mic (how will that splice in? add to image buffer and image list array?)
+// * add audio file ability?
+// * add dots under image showing progress grey dots for unclassified image, colored dots that match colors on classify buttons
+// * Undo button and skip button
+
+// BUGS:
+// * images not buffering after first five (getImages) working and (getImage) not working?
+
 let current_creds = [];
 let current_index = -1;
 let current_pass;
@@ -77,6 +88,7 @@ front.on("classifierresult", function(result){
 		current_classifier = result;
 		current_pass = document.querySelector('#check-pass-field').value;
 		document.querySelector('#check-pass-field').value = "";
+		addClassifyButtons(result.classifiers);
 		$('#pass-modal').modal('hide');
 		$('#play-modal').modal('show');
 		front.send("list", current_creds[current_index], current_pass);
@@ -230,6 +242,31 @@ function clearFields() {
 
 function setImage(image) {
 	document.getElementById('current-image').src = URL.createObjectURL(new Blob([image], { type: 'image/jpg' }));
+}
+
+function addClassifyButtons(classifiers) {
+	removeAllChildNodes(document.querySelector("#class-buttons"));
+	let template = document.createElement('template');
+	template.innerHTML 
+
+	let buttons_html = "";
+	for(const [index,classifier] of classifiers.entries()) {
+		buttons_html += `<div classifyint="${index}" style="margin-left:${index/classifiers.length*100}%;" class="class-button">${classifier}</div>`
+	}
+
+	document.querySelector("#class-buttons").insertAdjacentHTML('afterbegin', buttons_html);
+
+	//Click event for classification buttons
+	document.querySelectorAll('.class-button').forEach(cbutton => {
+		cbutton.onclick = function(evt) {
+			console.log(evt.target);
+			console.log("classify button");
+
+			let classify_int = parseInt(evt.target.getAttribute("classifyint"));
+			console.log("classify this image as: " + classify_int);
+			ihandle.classifyImage(classify_int);
+		}
+	});
 }
 
 function addListItem(cred) {
