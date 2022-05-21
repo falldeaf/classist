@@ -3,7 +3,10 @@ let current_index = -1;
 let current_pass;
 let current_classifier;
 let current_list;
-let current_images;
+
+let ihandle;
+let image_loaded = []; //5 loaded images
+let image_index = 0;   //index of currently viewed image
 
 (async ()=> {
 	removeAllChildNodes(document.querySelector("#cred-list"));
@@ -16,11 +19,23 @@ front.on("rendercreds", function(creds){
 	renderList();
 });
 
-front.on("storelist", function(list) {
-	console.log(list);
-	current_list = list;
+front.on("storelist", function(files) {
+	console.log(files);
 
-	front.send("getimages", ["30-5-21_9-45-34-795.jpg", "05-6-21_22-19-20-794.jpg"]);
+	let image_list = [];   //All image filenames without json
+	for(let file1 of files) {
+		if(file1.name.endsWith(".jpg")) {
+			let hasJson = false;
+			for(let file2 of files) {
+				if(file1.name.split('.')[0] + ".json" === file2.name) {
+					hasJson = true;
+				}
+			}
+			if(!hasJson) image_list.push({image_filename: file1.name, classification: -1});
+		}
+	}
+
+	ihandle = new ImageHandler(image_list, setImage);
 });
 
 front.on("testresult", function(result){
@@ -40,10 +55,18 @@ front.on("testresult", function(result){
 });
 
 front.on("receiveimages", function(images) {
+	console.log(images);
+	/*
 	current_images = images;
 	setImage(images[0]);
 	front.send("savejson", "{fooey:\"blah\"}", "/testfile.json");
 	console.log(images);
+	*/
+	ihandle.storeImages(images);
+});
+
+front.on("receiveimage", function(image) {
+	ihandle.storeImage(image);
 });
 
 front.on("classifierresult", function(result){
@@ -127,10 +150,10 @@ function renderList() {
 document.querySelector("#save-button").onclick = function(evt){
 	let cred = captureFields();
 	cred.password = ""; //Always delete this, this is only used for testing the connection, never store it
-	addListItem(cred);
 	current_creds.push(cred);
 	clearFields();
 	$('#add-modal').modal('hide');
+	renderList();
 	front.send("savecreds", current_creds);
 }
 

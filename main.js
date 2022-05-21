@@ -72,6 +72,10 @@ back.on("getimages", async (files)=>{
 	back.send("receiveimages", getImages(files));
 });
 
+back.on("getimage", async(file)=>{
+	back.send("receiveimage", getImages(file));
+});
+
 async function getClassifyJson(cred, pass, return_channel) {
 	try {
 		cred.password = pass;
@@ -92,11 +96,12 @@ async function getClassifyJson(cred, pass, return_channel) {
 }
 
 async function getImages(files) {
+	back.send("console", files);
 
 	let images = [];
 	for(let file of files) {
 		try {
-			images.push(await sftp.get(current_cred.path + "/" + file));
+			images.push(await sftp.get(current_cred.path + "/" + file.image_filename));
 		} catch (err) {
 			back.send("console", err.message);
 		}
