@@ -69,11 +69,12 @@ back.on("testcreds", (cred, pass)=>{
 // Classifing API
 
 back.on("getimages", async (files)=>{
-	back.send("receiveimages", getImages(files));
+	back.send("receiveimages", await getImages(files));
 });
 
 back.on("getimage", async(file)=>{
-	back.send("receiveimage", getImages(file));
+	let img = await getImages(file)[0];
+	back.send("receiveimage", img);
 });
 
 async function getClassifyJson(cred, pass, return_channel) {
@@ -106,5 +107,6 @@ async function getImages(files) {
 			back.send("console", err.message);
 		}
 	}
-	back.send("receiveimages", images);
+	//back.send("receiveimages", images);
+	return images;
 }

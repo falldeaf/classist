@@ -19,7 +19,8 @@ class ImageHandler {
 		this.image_index++;
 		this.last_image = this.image_buffer.shift();
 		this.placeCurrentImageCallback(this.last_image);
-		front.send("getimage", this.image_list[this.image_index+5]);
+		console.log(this.image_list[this.image_index+5]);
+		front.send("getimage", this.image_list.slice(this.image_index+5, this.image_index+6));
 	}
 
 	unclassifyPreviousImage() {
@@ -33,6 +34,6 @@ class ImageHandler {
 	}
 
 	storeImage(image) {
-		this.image_buffer.push(this.image);
+		this.image_buffer.push(image);
 	}
 }
