@@ -1,13 +1,15 @@
 //////////////////////
 // TODO: 
-// * place classification json on server, still
+// * place classification json on server
 // * add image/audio from camera/mic (how will that splice in? add to image buffer and image list array?)
 // * add audio file ability?
 // * add dots under image showing progress grey dots for unclassified image, colored dots that match colors on classify buttons
 // * Undo button and skip button
+// * unclassify (only allow if .old is not null?)
+// * loading screen for first list (main page) and waiting for first image (classification modal)
 
 // BUGS:
-// * images not buffering after first five (getImages) working and (getImage) not working?
+// * 
 
 let current_creds = [];
 let current_index = -1;
@@ -76,8 +78,8 @@ front.on("receiveimages", function(images) {
 	ihandle.storeImages(images);
 });
 
-front.on("receiveimage", function(image) {
-	ihandle.storeImage(image);
+front.on("receiveimage", function(image, loadname, load) {
+	ihandle.storeImage(image, loadname, load);
 });
 
 front.on("classifierresult", function(result){
@@ -111,7 +113,6 @@ front.on("console", function(message){
 function renderList() {
 	removeAllChildNodes(document.querySelector("#cred-list"));
 	for(let cred of current_creds) {
-		console.log(cred);
 		addListItem(cred);
 	}
 	////Add event handlers to buttons
@@ -120,7 +121,6 @@ function renderList() {
 	document.querySelectorAll('.play-open').forEach(pbutton => {
 		pbutton.onclick = function(evt) {
 			let label = evt.target.getAttribute('clabel');
-			console.log(evt.target);
 			console.log("play button label: " + label);
 
 			current_index = getIndexByName(label);
@@ -135,7 +135,6 @@ function renderList() {
 	document.querySelectorAll('.delete-open').forEach(dbutton => {
 		dbutton.onclick = function(evt) {
 			let label = evt.target.getAttribute('clabel');
-			console.log(evt.target);
 			console.log("delete button label: " + label);
 			document.querySelector("#delete-label").innerHTML = label;
 			document.querySelector("#delete-button").setAttribute('clabel', label);

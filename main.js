@@ -12,7 +12,6 @@ const back = require('androidjs').back;
 
 back.on("loadcreds", async (path) => {
 	save_path = path;
-	back.send("console", "Save path is: " + save_path);
 
 	fs.readFile(path + '/databases.json', 'utf8', (err, data) => {
 
@@ -57,7 +56,6 @@ back.on("list", async (cred, pass)=>{
 });
 
 back.on("getclassifier", (cred, pass)=>{
-	back.send("console", "getting classifier");
 	getClassifyJson(cred, pass, "classifierresult");
 });
 
@@ -68,13 +66,16 @@ back.on("testcreds", (cred, pass)=>{
 ///////////////////////////
 // Classifing API
 
-back.on("getimages", async (files)=>{
-	back.send("receiveimages", await getImages(files));
-});
+back.on("getimage", async(file, loadname, load)=>{
+	back.send("console", file);
 
-back.on("getimage", async(file)=>{
-	let img = await getImages(file)[0];
-	back.send("receiveimage", img);
+	try {
+		let image = await sftp.get(current_cred.path + "/" + file);
+		back.send("console", image);
+		back.send("receiveimage", image, loadname, load);
+	} catch (err) {
+		back.send("console", err.message);
+	}
 });
 
 async function getClassifyJson(cred, pass, return_channel) {
@@ -94,19 +95,4 @@ async function getClassifyJson(cred, pass, return_channel) {
 		back.send("console", err.message);
 		await sftp.end();
 	}
-}
-
-async function getImages(files) {
-	back.send("console", files);
-
-	let images = [];
-	for(let file of files) {
-		try {
-			images.push(await sftp.get(current_cred.path + "/" + file.image_filename));
-		} catch (err) {
-			back.send("console", err.message);
-		}
-	}
-	//back.send("receiveimages", images);
-	return images;
 }
