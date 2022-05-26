@@ -269,8 +269,8 @@ function addClassifyButtons(classifiers) {
 }
 
 function addListItem(cred) {
-	let template = document.createElement('template');
-	template.innerHTML 
+	//let template = document.createElement('template');
+	//template.innerHTML 
 	
 	let li_string = `
 		<li class="list-group-item">
