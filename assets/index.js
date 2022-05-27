@@ -17,7 +17,7 @@ let current_pass;
 let current_classifier;
 let current_list;
 
-let ihandle;
+let ihandle, bhandle;
 let image_loaded = []; //5 loaded images
 let image_index = 0;   //index of currently viewed image
 
@@ -49,6 +49,7 @@ front.on("storelist", function(files) {
 	}
 
 	ihandle = new ImageHandler(image_list, setImage);
+	bhandle = new BubbleHandler();
 });
 
 front.on("testresult", function(result){
@@ -264,6 +265,7 @@ function addClassifyButtons(classifiers) {
 			let classify_int = parseInt(evt.target.getAttribute("classifyint"));
 			console.log("classify this image as: " + classify_int);
 			ihandle.classifyImage(classify_int);
+			bhandle.addBubble(classify_int);
 		}
 	});
 }
